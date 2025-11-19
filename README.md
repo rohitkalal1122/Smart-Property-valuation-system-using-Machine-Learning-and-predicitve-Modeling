@@ -50,3 +50,21 @@ Other Tools
 Leaflet / Map APIs
 JSON API Calls
 Git / GitHub
+
+📦 Installation & Setup
+
+Follow these steps to run the project locally:
+
+1️⃣ Clone the Repository
+git clone https://github.com/your-username/your-repo-name.git
+
+2️⃣ Install Dependencies
+pip install -r requirements.txt
+
+3️⃣ Run the Backend (Flask)
+python app.py
+
+4️⃣ Open the Web App
+Visit this link in your browser:
+http://localhost:5000/
+
