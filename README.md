@@ -68,3 +68,38 @@ python app.py
 Visit this link in your browser:
 http://localhost:5000/
 
+📷 Screenshots
+/screenshots/homepage.png  
+/screenshots/prediction.png  
+/screenshots/calculators.png  
+
+✨ How It Works
+User enters property details
+System preprocesses inputs
+ML model predicts property value
+Map & calculators enhance decision-making
+User gets final valuation + suggestions
+
+🎯 Why This Project?
+Real estate buyers face lack of transparency, biased pricing, and inconsistent valuations.
+This system solves that by providing:
+
+✔ Data-backed predictions
+✔ No broker dependency
+✔ Accurate, unbiased results
+✔ Smart calculators for financial planning
+
+🔮 Future Enhancements
+pune city support
+Live real estate data integration
+Rental price predictor
+Market trend dashboard
+
+
+👥 Contributors
+Rohit Kalal
+Harshitha Loshetty
+Prince Bankar
+Harshwardhan Barkule
+ 
+
