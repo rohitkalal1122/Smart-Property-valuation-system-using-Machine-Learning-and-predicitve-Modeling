@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pune Home Price Prediction | AI-Powered Real Estate Valuation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(58, 134, 255, 0.9) 0%, rgba(131, 56, 236, 0.85) 100%), 
+                        url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .floating-card {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(58, 134, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(58, 134, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(58, 134, 255, 0); }
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(58, 134, 255, 0.3);
+        }
+        
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(58, 134, 255, 0.4);
+        }
+        
+        .tab-active {
+            background: rgba(58, 134, 255, 0.1);
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-inactive {
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-inactive:hover {
+            color: var(--primary);
+            background: rgba(58, 134, 255, 0.05);
+        }
+        
+        .area-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .area-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .area-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .area-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .area-card.active {
+            border: 2px solid var(--primary);
+            background-color: rgba(58, 134, 255, 0.05);
+        }
+        
+        .area-card.active::before {
+            transform: scaleX(1);
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #e9ecef, var(--primary));
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .risk-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .risk-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(58, 134, 255, 0.3);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-radius: 16px;
+            border-left: 5px solid var(--primary);
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .price-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .stat-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            background: rgba(58, 134, 255, 0.1);
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        .market-trend-up {
+            color: #28a745;
+        }
+        
+        .market-trend-down {
+            color: #dc3545;
+        }
+        
+        .loader {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .price-animation {
+            animation: priceCount 2s ease-out;
+        }
+        
+        @keyframes priceCount {
+            from { transform: scale(1.2); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px rgba(58, 134, 255, 0.7), 0 0 20px rgba(58, 134, 255, 0.5), 0 0 30px rgba(58, 134, 255, 0.3);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 10px); }
+            100% { transform: translate(0, -0px); }
+        }
+
+        /* Map Styles */
+        #pune-map {
+            height: 400px;
+            width: 100%;
+            border-radius: 12px;
+            z-index: 1;
+        }
+        
+        .map-popup {
+            font-family: 'Poppins', sans-serif;
+            min-width: 200px;
+        }
+        
+        .map-popup h3 {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .map-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2ecc71;
+        }
+        
+        .map-growth {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .map-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 8px;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        
+        .map-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Budget Calculator Styles */
+        .budget-result-card {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+            border-radius: 12px;
+            border-left: 4px solid #28a745;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .budget-area-card {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .budget-match {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+        
+        .budget-close {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        }
+
+        /* Enhanced Chatbot Styles - Fixed */
+        .chatbot-message {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .user-message {
+            text-align: right;
+        }
+
+        .user-bubble {
+            background: linear-gradient(135deg, #3a86ff, #8338ec);
+            color: white;
+            border-radius: 20px 20px 5px 20px;
+            display: inline-block;
+            max-width: 85%;
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2);
+        }
+
+        .bot-bubble {
+            background: #f8fafc;
+            color: #1e293b;
+            border-radius: 20px 20px 20px 5px;
+            padding: 14px 18px;
+            max-width: 85%;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            padding: 14px 18px;
+            background: #f8fafc;
+            border-radius: 20px 20px 20px 5px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .typing-dot {
+            width: 10px;
+            height: 10px;
+            background: #64748b;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingAnimation {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-suggestion {
+            background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+            border: 1px solid #bae6fd;
+            border-radius: 14px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #0369a1;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.1);
+        }
+
+        .chat-suggestion:hover {
+            background: linear-gradient(135deg, #bae6fd, #e0f2fe);
+            transform: translateX(5px) scale(1.02);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+        }
+
+        /* Chatbot scrollbar styling - Improved */
+        #chat-messages {
+            overflow-y: auto;
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100% - 180px);
+        }
+
+        #chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #chat-messages::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        #chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        #chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+       /* 🩵 Fixed chatbot container (always clickable & on top) */
+#chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999 !important; /* raise above everything */
+    pointer-events: auto !important;
+}
+
+/* Ensure chatbot window itself stays clickable */
+#chatbot-window {
+    z-index: 10000 !important;
+    pointer-events: auto !important;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateY(10px);
+    opacity: 0;
+}
+
+/* When visible */
+#chatbot-window:not(.hidden) {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Fully hide it when closed */
+#chatbot-window.hidden {
+    display: none !important;
+}
+
+
+        @media (max-height: 700px) {
+            #chatbot-window {
+                max-height: 85vh;
+                min-height: 400px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            #chatbot-window {
+                max-height: 90vh;
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-home text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-gray-800">PunePropAI</span>
+            </div>
+           <div class="hidden md:flex space-x-8">
+    <a href="market-trends.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Market Trends</a>
+    <a href="area-insights.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Area Insights</a>
+    <a href="resources.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Resources</a>
+    <a href="about.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
+</div>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-md">
+                Sign In
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg py-20 md:py-28 relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-32 w-80 h-80 bg-white rounded-full opacity-10"></div>
+            <div class="absolute -bottom-40 -left-32 w-80 h-80 bg-white rounded-full opacity-10"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-3xl mx-auto text-center text-white">
+                <div class="inline-flex items-center bg-white/20 px-4 py-2 rounded-full backdrop-blur mb-6">
+                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                    <span class="text-sm font-semibold">AI Powered Pune Property Valuation</span>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                    Pune Home <span class="neon-text">Price Prediction</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed">
+                    Get real-time, accurate home price estimates for Pune properties using advanced machine learning algorithms trained on local market data.
+                </p>
+                
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <div class="flex items-center bg-white/20 px-4 py-3 rounded-full backdrop-blur">
+                        <i class="fas fa-check-circle text-green-300 mr-2"></i>
+                        <span>95% Accuracy Rate</span>
+                    </div>
+                    <div class="flex items-center bg-white/20 px-4 py-3 rounded-full backdrop-blur">
+                        <i class="fas fa-bolt text-yellow-300 mr-2"></i>
+                        <span>Real-Time Data</span>
+                    </div>
+                    <div class="flex items-center bg-white/20 px-4 py-3 rounded-full backdrop-blur">
+                        <i class="fas fa-map-marker-alt text-blue-300 mr-2"></i>
+                        <span>Pune Area Coverage</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating elements -->
+        <div class="absolute top-1/4 left-10 floating">
+            <div class="w-6 h-6 bg-white rounded-full opacity-20"></div>
+        </div>
+        <div class="absolute bottom-1/4 right-10 floating" style="animation-delay: 1.5s;">
+            <div class="w-4 h-4 bg-white rounded-full opacity-20"></div>
+        </div>
+    </section>
+
+    <!-- Main Prediction Card -->
+    <section class="py-12 md:py-20 -mt-10 md:-mt-20 relative z-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="glass-card p-6 md:p-8 floating-card">
+                    <!-- Tabs -->
+                    <div class="flex mb-8 rounded-2xl bg-gray-100 p-1">
+                        <button id="tab-details" class="flex-1 py-3 font-semibold rounded-xl flex items-center justify-center gap-2 tab-active">
+                            <i class="fas fa-home"></i> Property Details
+                        </button>
+                        <button id="tab-location" class="flex-1 py-3 font-semibold rounded-xl flex items-center justify-center gap-2 tab-inactive">
+                            <i class="fas fa-map-marker-alt"></i> Location & Area
+                        </button>
+                        <button id="tab-map" class="flex-1 py-3 font-semibold rounded-xl flex items-center justify-center gap-2 tab-inactive">
+                            <i class="fas fa-map"></i> Map Analysis
+                        </button>
+                        <button id="tab-budget" class="flex-1 py-3 font-semibold rounded-xl flex items-center justify-center gap-2 tab-inactive">
+                            <i class="fas fa-calculator"></i> Budget Finder
+                        </button>
+                    </div>
+                    
+                    <!-- Property Details Tab -->
+                    <div id="details-content" class="tab-content">
+                        <form id="predictForm" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="sqft">
+                                        <i class="fas fa-ruler-combined text-blue-500 mr-2"></i>Square Footage
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" name="sqft" id="sqft" placeholder="e.g. 1200" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition pl-10" required min="300" max="10000">
+                                        <i class="fas fa-vector-square absolute left-3 top-3.5 text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="year">
+                                        <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>Year Built
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" name="year" id="year" placeholder="e.g. 2015" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition pl-10" required min="1950" max="2024">
+                                        <i class="fas fa-history absolute left-3 top-3.5 text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="bedrooms">
+                                        <i class="fas fa-bed text-blue-500 mr-2"></i>Bedrooms
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" name="bedrooms" id="bedrooms" placeholder="e.g. 2" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition pl-10" required min="1" max="10">
+                                        <i class="fas fa-door-closed absolute left-3 top-3.5 text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="bathrooms">
+                                        <i class="fas fa-bath text-blue-500 mr-2"></i>Bathrooms
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" name="bathrooms" id="bathrooms" placeholder="e.g. 2" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition pl-10" required min="1" max="10" step="0.5">
+                                        <i class="fas fa-shower absolute left-3 top-3.5 text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="walk_index">
+                                        <i class="fas fa-walking text-blue-500 mr-2"></i>Walkability Score
+                                    </label>
+                                    <div class="relative">
+                                        <input type="range" name="walk_index" id="walk_index" min="0" max="10" value="5" class="w-full slider">
+                                        <div class="flex justify-between text-xs text-gray-500 mt-2">
+                                            <span>0 (Car Dependent)</span>
+                                            <span id="walk_value" class="font-semibold text-blue-600">5</span>
+                                            <span>10 (Walker's Paradise)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <i class="fas fa-exclamation-triangle text-blue-500 mr-2"></i>Risk Score
+                                    </label>
+                                    <div class="flex space-x-3">
+                                        <button type="button" class="risk-btn flex-1 py-3 text-center rounded-xl border border-gray-300 bg-white" data-value="1">
+                                            <i class="fas fa-smile text-green-500 mr-2"></i>Low
+                                        </button>
+                                        <button type="button" class="risk-btn flex-1 py-3 text-center rounded-xl border border-gray-300 bg-white active" data-value="2">
+                                            <i class="fas fa-meh text-yellow-500 mr-2"></i>Medium
+                                        </button>
+                                        <button type="button" class="risk-btn flex-1 py-3 text-center rounded-xl border border-gray-300 bg-white" data-value="3">
+                                            <i class="fas fa-frown text-red-500 mr-2"></i>High
+                                        </button>
+                                    </div>
+                                    <input type="hidden" name="risk_score" id="risk_score" value="2">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-gradient w-full py-4 text-lg font-semibold shadow-lg flex items-center justify-center gap-2 mt-4 pulse-glow">
+                                <i class="fas fa-magic"></i>
+                                Get Price Estimate
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Location Tab -->
+                    <div id="location-content" class="tab-content hidden">
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-map-marked-alt text-blue-500 mr-2"></i> Select Pune Area
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center active" data-area="Kothrud">
+                                    <div class="font-semibold text-gray-800">Kothrud</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹8,500/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+10.2% growth</div>
+                                </div>
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center" data-area="Hinjewadi">
+                                    <div class="font-semibold text-gray-800">Hinjewadi</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹7,200/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+12.5% growth</div>
+                                </div>
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center" data-area="Viman Nagar">
+                                    <div class="font-semibold text-gray-800">Viman Nagar</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹9,800/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+9.8% growth</div>
+                                </div>
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center" data-area="Baner">
+                                    <div class="font-semibold text-gray-800">Baner</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹8,900/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+11.2% growth</div>
+                                </div>
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center" data-area="Wakad">
+                                    <div class="font-semibold text-gray-800">Wakad</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹7,500/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+13.1% growth</div>
+                                </div>
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center" data-area="Kharadi">
+                                    <div class="font-semibold text-gray-800">Kharadi</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹8,200/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+14.3% growth</div>
+                                </div>
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center" data-area="Aundh">
+                                    <div class="font-semibold text-gray-800">Aundh</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹9,200/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+8.7% growth</div>
+                                </div>
+                                <div class="area-card p-4 bg-white border border-gray-200 text-center" data-area="Hadapsar">
+                                    <div class="font-semibold text-gray-800">Hadapsar</div>
+                                    <div class="text-sm text-gray-500 mt-1">₹6,800/sq.ft</div>
+                                    <div class="text-xs text-green-500 mt-1 font-medium">+7.5% growth</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-5 rounded-xl border border-blue-100 mb-6">
+                                <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                                    <i class="fas fa-chart-line text-orange-500 mr-2"></i>
+                                    Pune Market Insight
+                                </h4>
+                                <p class="text-sm text-gray-600">
+                                    Pune property prices have increased by <span class="font-semibold text-green-600">8.5%</span> in the last year. 
+                                    Areas like <span class="font-medium">Hinjewadi</span> and <span class="font-medium">Kharadi</span> are seeing the highest growth due to IT sector expansion.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Analysis Tab -->
+                    <div id="map-content" class="tab-content hidden">
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-map-marked-alt text-blue-500 mr-2"></i> Pune Property Map
+                            </h3>
+                            <p class="text-gray-600 mb-4">Click on any location on the map to get property price analysis for that area.</p>
+                            
+                            <div id="pune-map"></div>
+                            
+                            <div id="map-analysis-result" class="mt-6 hidden">
+                                <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-5 rounded-xl border border-blue-200">
+                                    <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                        <i class="fas fa-chart-bar text-blue-500 mr-2"></i>
+                                        Area Analysis
+                                    </h4>
+                                    <div id="map-analysis-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Budget Finder Tab -->
+                    <div id="budget-content" class="tab-content hidden">
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-calculator text-blue-500 mr-2"></i> Budget-Based Area Finder
+                            </h3>
+                            <p class="text-gray-600 mb-4">Enter your budget to find suitable areas in Pune.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="total-budget">
+                                        <i class="fas fa-rupee-sign text-blue-500 mr-2"></i>Total Budget (₹)
+                                    </label>
+                                    <input type="number" id="total-budget" placeholder="e.g. 5000000" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="property-size">
+                                        <i class="fas fa-ruler-combined text-blue-500 mr-2"></i>Desired Size (sq.ft)
+                                    </label>
+                                    <input type="number" id="property-size" placeholder="e.g. 1000" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                </div>
+                            </div>
+                            
+                            <button id="find-areas-btn" class="btn-gradient w-full py-3 text-lg font-semibold shadow-lg flex items-center justify-center gap-2">
+                                <i class="fas fa-search"></i>
+                                Find Suitable Areas
+                            </button>
+                            
+                            <div id="budget-results" class="mt-6 hidden">
+                                <div class="bg-gradient-to-r from-green-50 to-blue-50 p-5 rounded-xl border border-green-200">
+                                    <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                        <i class="fas fa-home text-green-500 mr-2"></i>
+                                        Areas Within Your Budget
+                                    </h4>
+                                    <div id="budget-results-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Result Section -->
+                    <div id="result" class="mt-8 hidden">
+                        <div class="result-card p-6">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-700">Estimated Home Value</h3>
+                                    <div class="text-3xl md:text-4xl font-bold text-blue-700 mt-2 price-animation" id="estimatedValue">₹52,50,000</div>
+                                    <div class="text-sm text-gray-500 mt-1">Based on current Pune market data and property details</div>
+                                </div>
+                                <div class="mt-4 md:mt-0 text-center md:text-right">
+                                    <div class="inline-flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        <i class="fas fa-trend-up mr-1"></i> +8.5% from last year
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-2">Confidence: <span class="font-medium text-green-600">High</span></div>
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-gray-200">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Property Size</span>
+                                        <span class="font-medium" id="sizeValue">1,200 sq ft</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Price per sq ft</span>
+                                        <span class="font-medium" id="pricePerSqft">₹4,375</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Area Premium</span>
+                                        <span class="font-medium text-green-600" id="areaPremium">+₹2,50,000</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Walkability Bonus</span>
+                                        <span class="font-medium text-green-600" id="walkBonus">+₹1,25,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="stat-card bg-white p-4 rounded-xl border border-gray-200 text-center">
+                                <div class="text-lg font-semibold text-gray-700">Similar Properties</div>
+                                <div class="text-2xl font-bold text-blue-600 mt-1">12</div>
+                                <div class="text-xs text-gray-500">in your area</div>
+                            </div>
+                            <div class="stat-card bg-white p-4 rounded-xl border border-gray-200 text-center">
+                                <div class="text-lg font-semibold text-gray-700">Avg. Time on Market</div>
+                                <div class="text-2xl font-bold text-blue-600 mt-1">45 days</div>
+                                <div class="text-xs text-gray-500">in current market</div>
+                            </div>
+                            <div class="stat-card bg-white p-4 rounded-xl border border-gray-200 text-center">
+                                <div class="text-lg font-semibold text-gray-700">Price Trend</div>
+                                <div class="text-2xl font-bold text-green-600 mt-1">+2.1%</div>
+                                <div class="text-xs text-gray-500">last 3 months</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading State -->
+                    <div id="loading" class="mt-8 hidden">
+                        <div class="text-center">
+                            <div class="loader"></div>
+                            <p class="mt-4 text-gray-600">Analyzing property data and market trends...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Pune Real Estate Insights</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="stat-card bg-white p-6 text-center shadow-md">
+                    <div class="text-3xl font-bold text-blue-600">12.5%</div>
+                    <div class="text-gray-600 mt-2">Avg. Price Increase (YoY)</div>
+                </div>
+                <div class="stat-card bg-white p-6 text-center shadow-md">
+                    <div class="text-3xl font-bold text-green-600">8,200+</div>
+                    <div class="text-gray-600 mt-2">Properties Analyzed</div>
+                </div>
+                <div class="stat-card bg-white p-6 text-center shadow-md">
+                    <div class="text-3xl font-bold text-purple-600">₹7,850</div>
+                    <div class="text-gray-600 mt-2">Avg. Price per Sq.Ft</div>
+                </div>
+                <div class="stat-card bg-white p-6 text-center shadow-md">
+                    <div class="text-3xl font-bold text-orange-500">42 days</div>
+                    <div class="text-gray-600 mt-2">Avg. Selling Time</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-gradient-to-b from-white to-blue-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Why Choose Our Pune AI Model?</h2>
+                <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+                    Our machine learning algorithms provide the most accurate Pune home valuations by analyzing local market data and trends.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card bg-white rounded-xl shadow p-6 flex flex-col">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3 text-center">Pune-Specific Data</h3>
+                    <p class="text-gray-500 flex-grow text-center">
+                        Our models are trained exclusively on Pune property data, accounting for local factors like IT corridor growth, infrastructure projects, and neighborhood amenities.
+                    </p>
+                </div>
+                <div class="feature-card bg-white rounded-xl shadow p-6 flex flex-col">
+                    <div class="feature-icon">
+                        <i class="fas fa-trend-up"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3 text-center">Real-Time Market Trends</h3>
+                    <p class="text-gray-500 flex-grow text-center">
+                        We track Pune's dynamic real estate market in real-time, incorporating recent sales, price trends, and demand patterns into our valuations.
+                    </p>
+                </div>
+                <div class="feature-card bg-white rounded-xl shadow p-6 flex flex-col">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3 text-center">Area-Specific Insights</h3>
+                    <p class="text-gray-500 flex-grow text-center">
+                        Get detailed breakdowns for specific Pune localities like Kothrud, Hinjewadi, and Viman Nagar with localized price factors and growth projections.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-purple-700">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Discover Your Pune Home's Value?</h2>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8">
+                Get an accurate, data-driven estimate in seconds with our AI-powered Pune property valuation tool.
+            </p>
+            <button class="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg font-bold text-lg shadow-lg transition-colors inline-flex items-center gap-2">
+                <i class="fas fa-home"></i> Estimate Your Home Value
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="text-xl font-bold">PunePropAI</span>
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                        AI-powered property valuation for Pune homeowners, buyers, and real estate professionals.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Pune Areas</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors">Kothrud</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Hinjewadi</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Viman Nagar</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Baner</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Company</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Legal</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Data Accuracy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2023 PunePropAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced AI Chatbot Widget - Fixed -->
+    <div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+        <!-- Chatbot Toggle Button -->
+        <button id="chatbot-toggle" class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-xl transition-all duration-300 pulse-glow">
+            <i class="fas fa-robot text-xl"></i>
+        </button>
+
+        <!-- Fixed Chatbot Window - Starts closed by default -->
+        <div id="chatbot-window" class="hidden absolute bottom-20 right-0 w-96 max-h-[75vh] min-h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-t-2xl flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-blue-500 text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-sm">PuneProp AI Assistant</h3>
+                        <div class="text-xs opacity-80 flex items-center">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
+                            Online - Ready to help
+                        </div>
+                    </div>
+                </div>
+                <button id="chatbot-close" class="text-white hover:text-gray-200 text-lg">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Chat Messages - Fixed with proper scroll -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50">
+                <!-- Welcome Message -->
+                <div class="mb-4">
+                    <div class="bg-blue-100 rounded-2xl rounded-bl-none p-3 max-w-xs">
+                        <p class="text-sm text-gray-800 font-medium">Hello! 👋 I'm your Pune property AI assistant.</p>
+                        <p class="text-sm text-gray-600 mt-2">I can help you with:</p>
+                        <ul class="text-xs text-gray-600 mt-1 ml-4 list-disc space-y-1">
+                            <li>Home price predictions & trends</li>
+                            <li>Area-specific insights</li>
+                            <li>Investment advice</li>
+                            <li>Market analysis</li>
+                        </ul>
+                        <p class="text-xs text-gray-500 mt-2">How can I help you today?</p>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1 text-right">Just now</div>
+                </div>
+            </div>
+
+            <!-- Enhanced Quick Questions - Compact -->
+            <div id="quick-questions" class="p-3 border-t border-gray-200 bg-white flex-shrink-0">
+                <p class="text-xs text-gray-500 font-medium mb-2">Quick questions:</p>
+                <div class="flex flex-wrap gap-1">
+                    <button class="quick-question text-xs bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-blue-700 px-2 py-1 rounded-full transition-all duration-200 border border-blue-200" data-question="What's the average price in Kothrud?">
+                        <i class="fas fa-home mr-1"></i>Kothrud prices
+                    </button>
+                    <button class="quick-question text-xs bg-gradient-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 text-green-700 px-2 py-1 rounded-full transition-all duration-200 border border-green-200" data-question="Which area has best growth?">
+                        <i class="fas fa-chart-line mr-1"></i>Best growth
+                    </button>
+                    <button class="quick-question text-xs bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 text-purple-700 px-2 py-1 rounded-full transition-all duration-200 border border-purple-200" data-question="How to calculate property value?">
+                        <i class="fas fa-calculator mr-1"></i>Calculate
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enhanced Chat Input - Compact -->
+            <div class="p-3 border-t border-gray-200 bg-white rounded-b-2xl flex-shrink-0">
+                <div class="flex space-x-2">
+                    <input type="text" id="chat-input" placeholder="Ask about Pune properties..." 
+                           class="flex-1 border border-gray-300 rounded-full px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                    <button id="send-message" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-md">
+                        <i class="fas fa-paper-plane text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Code -->
+    <script>
+        // Pune Home Price Prediction App
+        let selectedArea = 'Kothrud';
+        const areaData = {
+            'Kothrud': { pricePerSqft: 8500, growth: 10.2, lat: 18.5074, lng: 73.8077 },
+            'Hinjewadi': { pricePerSqft: 7200, growth: 12.5, lat: 18.5999, lng: 73.7345 },
+            'Viman Nagar': { pricePerSqft: 9800, growth: 9.8, lat: 18.5682, lng: 73.9193 },
+            'Baner': { pricePerSqft: 8900, growth: 11.2, lat: 18.5597, lng: 73.7865 },
+            'Wakad': { pricePerSqft: 7500, growth: 13.1, lat: 18.5993, lng: 73.7614 },
+            'Kharadi': { pricePerSqft: 8200, growth: 14.3, lat: 18.5522, lng: 73.9417 },
+            'Aundh': { pricePerSqft: 9200, growth: 8.7, lat: 18.5640, lng: 73.8070 },
+            'Hadapsar': { pricePerSqft: 6800, growth: 7.5, lat: 18.5070, lng: 73.9410 }
+        };
+
+        let map;
+        let markers = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            initializeForm();
+            initializeMap();
+            initializeChatbot();
+            
+            // Ensure chatbot starts closed
+            document.getElementById('chatbot-window').classList.add('hidden');
+        });
+
+        function setupEventListeners() {
+            // Tab functionality
+            const tabs = ['details', 'location', 'map', 'budget'];
+            tabs.forEach(tab => {
+                const tabElement = document.getElementById(`tab-${tab}`);
+                const contentElement = document.getElementById(`${tab}-content`);
+                
+                tabElement.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => {
+                        document.getElementById(`tab-${t}`).classList.remove('tab-active');
+                        document.getElementById(`${t}-content`).classList.add('hidden');
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('tab-active');
+                    contentElement.classList.remove('hidden');
+                    
+                    // If map tab is selected, invalidate map size to ensure proper rendering
+                    if (tab === 'map') {
+                        setTimeout(() => {
+                            if (map) map.invalidateSize();
+                        }, 300);
+                    }
+                });
+            });
+            
+            // Area selection
+            document.querySelectorAll('.area-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const area = this.getAttribute('data-area');
+                    selectArea(area);
+                });
+            });
+            
+            // Form functionality
+            const form = document.getElementById('predictForm');
+            const resultDiv = document.getElementById('result');
+            const loadingDiv = document.getElementById('loading');
+            const walkSlider = document.getElementById('walk_index');
+            const walkValue = document.getElementById('walk_value');
+            const riskButtons = document.querySelectorAll('.risk-btn');
+            const riskInput = document.getElementById('risk_score');
+            
+            // Update walkability value display
+            walkSlider.addEventListener('input', function() {
+                walkValue.textContent = this.value;
+            });
+            
+            // Risk score selection
+            riskButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    riskButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update hidden input value
+                    riskInput.value = this.getAttribute('data-value');
+                });
+            });
+            
+            // Budget finder functionality
+            const budgetBtn = document.getElementById('find-areas-btn');
+            budgetBtn.addEventListener('click', findAreasByBudget);
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Calculating...';
+                submitBtn.disabled = true;
+                
+                // Hide previous results, show loading
+                resultDiv.classList.add('hidden');
+                loadingDiv.classList.remove('hidden');
+                
+                // Prepare data for API
+                const data = {
+                    sqft: Number(form.sqft.value),
+                    bedrooms: Number(form.bedrooms.value),
+                    bathrooms: Number(form.bathrooms.value),
+                    year: Number(form.year.value),
+                    walk_index: Number(form.walk_index.value),
+                    risk_score: Number(form.risk_score.value),
+                    area: selectedArea
+                };
+                
+                // Make actual API call to your Flask backend
+                fetch('http://localhost:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    // Display results from API
+                    displayResults(result, data);
+                })
+                .catch(error => {
+                    console.error('Prediction error:', error);
+                    displayError('Prediction failed. Please check your inputs and try again.');
+                })
+                .finally(() => {
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    loadingDiv.classList.add('hidden');
+                });
+            });
+        }
+
+        function initializeForm() {
+            // Set default values
+            document.getElementById('sqft').value = 1200;
+            document.getElementById('year').value = 2015;
+            document.getElementById('bedrooms').value = 2;
+            document.getElementById('bathrooms').value = 2;
+            document.getElementById('walk_index').value = 5;
+            
+            // Set default risk button
+            document.querySelector('.risk-btn[data-value="2"]').click();
+            
+            // Set default area
+            selectArea('Kothrud');
+            
+            // Set default budget values
+            document.getElementById('total-budget').value = 5000000;
+            document.getElementById('property-size').value = 1000;
+        }
+
+        function initializeMap() {
+            // Initialize the map centered on Pune
+            map = L.map('pune-map').setView([18.5204, 73.8567], 11);
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // Add markers for each area
+            Object.keys(areaData).forEach(area => {
+                const data = areaData[area];
+                const marker = L.marker([data.lat, data.lng]).addTo(map);
+                
+                marker.bindPopup(`
+                    <div class="map-popup">
+                        <h3>${area}</h3>
+                        <p class="map-price">₹${data.pricePerSqft}/sq.ft</p>
+                        <p class="map-growth">Growth: +${data.growth}%</p>
+                        <button class="map-btn" onclick="selectAreaFromMap('${area}')">
+                            Select This Area
+                        </button>
+                    </div>
+                `);
+                
+                markers.push(marker);
+            });
+            
+            // Add click event to map for custom location analysis
+            map.on('click', function(e) {
+                analyzeCustomLocation(e.latlng.lat, e.latlng.lng);
+            });
+        }
+
+        function selectArea(area) {
+            selectedArea = area;
+            
+            // Update UI
+            document.querySelectorAll('.area-card').forEach(card => {
+                card.classList.remove('active');
+                if (card.getAttribute('data-area') === area) {
+                    card.classList.add('active');
+                }
+            });
+            
+            // Pan map to selected area
+            if (map && areaData[area]) {
+                const data = areaData[area];
+                map.setView([data.lat, data.lng], 14);
+                
+                // Open popup for selected area
+                markers.forEach(marker => {
+                    if (marker.getPopup().getContent().includes(area)) {
+                        marker.openPopup();
+                    }
+                });
+            }
+        }
+
+        function selectAreaFromMap(area) {
+            selectArea(area);
+            // Switch to location tab
+            document.getElementById('tab-location').click();
+        }
+
+        function analyzeCustomLocation(lat, lng) {
+            // Find the nearest area to the clicked location
+            let nearestArea = '';
+            let minDistance = Infinity;
+            
+            Object.keys(areaData).forEach(area => {
+                const areaLat = areaData[area].lat;
+                const areaLng = areaData[area].lng;
+                
+                // Simple distance calculation (for demo purposes)
+                const distance = Math.sqrt(Math.pow(lat - areaLat, 2) + Math.pow(lng - areaLng, 2));
+                
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestArea = area;
+                }
+            });
+            
+            // Display analysis result
+            const resultDiv = document.getElementById('map-analysis-result');
+            const contentDiv = document.getElementById('map-analysis-content');
+            
+            if (nearestArea) {
+                const data = areaData[nearestArea];
+                contentDiv.innerHTML = `
+                    <div class="mb-3">
+                        <h5 class="font-semibold text-gray-700">Nearest Area: <span class="text-blue-600">${nearestArea}</span></h5>
+                        <p class="text-sm text-gray-600">Based on your selected location, this is the closest Pune locality.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-3">
+                        <div>
+                            <p class="text-sm text-gray-600">Price per sq.ft</p>
+                            <p class="font-bold text-green-600">₹${data.pricePerSqft}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Growth Rate</p>
+                            <p class="font-bold text-blue-600">+${data.growth}%</p>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-sm text-gray-600">Investment Potential</p>
+                        <p class="font-medium ${data.growth > 10 ? 'text-green-600' : 'text-yellow-600'}">
+                            ${data.growth > 12 ? 'High' : data.growth > 9 ? 'Medium' : 'Stable'}
+                        </p>
+                    </div>
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full" onclick="selectArea('${nearestArea}')">
+                        Use ${nearestArea} for Calculation
+                    </button>
+                `;
+                resultDiv.classList.remove('hidden');
+            }
+        }
+
+        function findAreasByBudget() {
+            const budget = parseInt(document.getElementById('total-budget').value);
+            const size = parseInt(document.getElementById('property-size').value) || 1000;
+            
+            if (!budget || budget <= 0) {
+                alert('Please enter a valid budget amount.');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('budget-results');
+            const contentDiv = document.getElementById('budget-results-content');
+            
+            let suitableAreas = [];
+            let closeAreas = [];
+            
+            // Calculate price per sq.ft based on budget and size
+            const budgetPerSqft = budget / size;
+            
+            Object.keys(areaData).forEach(area => {
+                const areaPrice = areaData[area].pricePerSqft;
+                const difference = Math.abs(areaPrice - budgetPerSqft);
+                const percentageDiff = (difference / areaPrice) * 100;
+                
+                if (percentageDiff <= 10) {
+                    suitableAreas.push({
+                        area: area,
+                        pricePerSqft: areaPrice,
+                        growth: areaData[area].growth,
+                        totalPrice: areaPrice * size,
+                        difference: percentageDiff
+                    });
+                } else if (percentageDiff <= 20) {
+                    closeAreas.push({
+                        area: area,
+                        pricePerSqft: areaPrice,
+                        growth: areaData[area].growth,
+                        totalPrice: areaPrice * size,
+                        difference: percentageDiff
+                    });
+                }
+            });
+            
+            // Sort by closest match
+            suitableAreas.sort((a, b) => a.difference - b.difference);
+            closeAreas.sort((a, b) => a.difference - b.difference);
+            
+            let html = '';
+            
+            if (suitableAreas.length > 0) {
+                html += `<h5 class="font-semibold text-green-700 mb-3">Perfect Matches (Within 10% of your budget):</h5>`;
+                suitableAreas.forEach(area => {
+                    html += `
+                        <div class="budget-area-card budget-match">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h6 class="font-semibold text-gray-800">${area.area}</h6>
+                                    <p class="text-sm text-gray-600">₹${area.pricePerSqft}/sq.ft • +${area.growth}% growth</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-green-700">₹${(area.totalPrice / 100000).toFixed(1)}L</p>
+                                    <p class="text-xs text-gray-500">for ${size} sq.ft</p>
+                                </div>
+                            </div>
+                            <button class="mt-2 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs font-medium transition-colors w-full" onclick="selectArea('${area.area}')">
+                                Select ${area.area}
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (closeAreas.length > 0) {
+                html += `<h5 class="font-semibold text-yellow-700 mb-3 mt-4">Close Matches (Within 20% of your budget):</h5>`;
+                closeAreas.forEach(area => {
+                    html += `
+                        <div class="budget-area-card budget-close">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h6 class="font-semibold text-gray-800">${area.area}</h6>
+                                    <p class="text-sm text-gray-600">₹${area.pricePerSqft}/sq.ft • +${area.growth}% growth</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-yellow-700">₹${(area.totalPrice / 100000).toFixed(1)}L</p>
+                                    <p class="text-xs text-gray-500">for ${size} sq.ft</p>
+                                </div>
+                            </div>
+                            <button class="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs font-medium transition-colors w-full" onclick="selectArea('${area.area}')">
+                                Select ${area.area}
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (suitableAreas.length === 0 && closeAreas.length === 0) {
+                html = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-search text-gray-400 text-3xl mb-2"></i>
+                        <p class="text-gray-600">No areas found within your budget.</p>
+                        <p class="text-sm text-gray-500 mt-1">Try increasing your budget or reducing the property size.</p>
+                    </div>
+                `;
+            }
+            
+            contentDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+        }
+
+        function calculatePrice(data) {
+            const areaInfo = areaData[data.area] || areaData['Kothrud'];
+            
+            // Base price calculation using Pune-specific factors
+            let basePrice = data.sqft * areaInfo.pricePerSqft;
+            
+            // Adjust for property features
+            basePrice += data.bedrooms * 500000; // ₹5L per bedroom
+            basePrice += data.bathrooms * 300000; // ₹3L per bathroom
+            
+            // Adjust for age (depreciation for older properties)
+            const age = 2024 - data.year;
+            if (age > 0) {
+                basePrice *= Math.max(0.7, 1 - (age * 0.01)); // 1% depreciation per year, min 70% value
+            }
+            
+            // Adjust for walkability
+            const walkBonus = data.walk_index * 25000; // ₹25K per walkability point
+            basePrice += walkBonus;
+            
+            // Adjust for risk (higher risk = lower price)
+            let riskDiscount = 0;
+            if (data.risk_score === 1) basePrice *= 1.05; // Low risk = 5% premium
+            if (data.risk_score === 3) {
+                riskDiscount = -basePrice * 0.05; // High risk = 5% discount
+                basePrice *= 0.95;
+            }
+            
+            // Area growth premium
+            const areaPremium = basePrice * (areaInfo.growth / 100);
+            basePrice += areaPremium;
+            
+            // Add some realistic noise
+            basePrice += (Math.random() - 0.5) * basePrice * 0.02;
+            
+            return {
+                predicted_price: Math.round(basePrice),
+                walk_bonus: walkBonus,
+                risk_discount: riskDiscount,
+                area_premium: areaPremium,
+                price_per_sqft: Math.round(basePrice / data.sqft)
+            };
+        }
+
+        function displayResults(result, formData) {
+            const resultDiv = document.getElementById('result');
+            
+            // Format currency in Indian format
+            const formatter = new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            });
+            
+            // Update result elements - using API response structure
+            document.getElementById('estimatedValue').textContent = formatter.format(result.predicted_price);
+            document.getElementById('sizeValue').textContent = formData.sqft.toLocaleString() + ' sq ft';
+            document.getElementById('pricePerSqft').textContent = '₹' + Math.round(result.predicted_price / formData.sqft).toLocaleString();
+            document.getElementById('areaPremium').textContent = formatter.format(result.area_premium || 0);
+            document.getElementById('walkBonus').textContent = formatter.format(result.walk_bonus || 0);
+            
+            // Show result with animation
+            resultDiv.classList.remove('hidden');
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Add animation class to price
+            const priceElement = document.getElementById('estimatedValue');
+            priceElement.classList.add('price-animation');
+            setTimeout(() => {
+                priceElement.classList.remove('price-animation');
+            }, 2000);
+        }
+
+        function displayError(message) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                    <div class="text-red-600 font-semibold text-lg mb-2">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>${message}
+                    </div>
+                    <div class="text-red-500 text-sm">Please check your inputs and try again.</div>
+                </div>
+            `;
+            resultDiv.classList.remove('hidden');
+        }
+
+        
+function initializeChatbot() {
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const sendMessage = document.getElementById('send-message');
+    const quickQuestions = document.querySelectorAll('.quick-question');
+
+    // Use a global state (to avoid closure mismatch)
+    window.chatbotOpen = false;
+
+    // Ensure starts closed
+    chatbotWindow.classList.add('hidden');
+
+    // --- Toggle chatbot open/close ---
+    chatbotToggle.addEventListener('click', function (event) {
+        event.stopPropagation();
+        window.chatbotOpen = !window.chatbotOpen;
+        chatbotWindow.classList.toggle('hidden', !window.chatbotOpen);
+        if (window.chatbotOpen) {
+            chatInput.focus();
+            scrollToBottom();
+        }
+    });
+
+    // --- Close chatbot via ❌ ---
+    chatbotClose.addEventListener('click', function (event) {
+        event.stopPropagation(); // Prevent outside click handler from firing
+        window.chatbotOpen = false;
+        chatbotWindow.classList.add('hidden');
+    });
+
+    // --- Close when clicking outside ---
+    document.addEventListener('click', function (event) {
+        if (!chatbotWindow || !chatbotToggle) return;
+
+        const isInside = chatbotWindow.contains(event.target);
+        const isToggle = chatbotToggle.contains(event.target);
+        const isClose = chatbotClose.contains(event.target);
+
+        // Close only if visible, and click not inside or on toggle
+        if (window.chatbotOpen && !isInside && !isToggle && !isClose) {
+            window.chatbotOpen = false;
+            chatbotWindow.classList.add('hidden');
+        }
+    });
+
+    // --- Send message ---
+    sendMessage.addEventListener('click', sendChatMessage);
+    chatInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') sendChatMessage();
+    });
+
+    // --- Quick question buttons ---
+    quickQuestions.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const question = this.getAttribute('data-question');
+            addUserMessage(question);
+            processChatMessage(question);
+        });
+    });
+
+    function sendChatMessage() {
+        const msg = chatInput.value.trim();
+        if (!msg) return;
+        chatInput.value = '';
+        addUserMessage(msg);
+        processChatMessage(msg);
+    }
+
+    function addUserMessage(msg) {
+        const div = document.createElement('div');
+        div.className = 'chatbot-message user-message';
+        div.innerHTML = `<div class="user-bubble">${escapeHtml(msg)}</div>
+                         <div class="text-xs text-gray-400 mt-1">Just now</div>`;
+        chatMessages.appendChild(div);
+        scrollToBottom();
+    }
+
+    function addBotMessage(msg) {
+        const div = document.createElement('div');
+        div.className = 'chatbot-message';
+        div.innerHTML = `<div class="bot-bubble">${msg}</div>
+                         <div class="text-xs text-gray-400 mt-1">Just now</div>`;
+        chatMessages.appendChild(div);
+        scrollToBottom();
+    }
+
+    function processChatMessage(msg) {
+        const typing = document.createElement('div');
+        typing.className = 'chatbot-message';
+        typing.innerHTML = `<div class="typing-indicator">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>`;
+        chatMessages.appendChild(typing);
+        scrollToBottom();
+        setTimeout(() => {
+            typing.remove();
+            addBotMessage(generateAIResponse(msg));
+        }, 1000 + Math.random() * 1000);
+    }
+
+    function generateAIResponse(msg) {
+        const q = msg.toLowerCase();
+        if (q.includes('kothrud') || q.includes('price')) {
+            return `🏠 <strong>Kothrud Property Prices:</strong><br><br>
+            • Avg: ₹8,500–9,500/sq.ft<br>
+            • 2BHK: ₹85L–₹95L<br>
+            • 3BHK: ₹1.2Cr–₹1.5Cr<br>
+            • Growth: 10.2%<br><br><em>Prime location with strong resale value.</em>`;
+        }
+        if (q.includes('growth') || q.includes('investment')) {
+            return `📈 <strong>Top Growth Areas:</strong><br><br>
+            • Kharadi – 14.3% (IT zone)<br>
+            • Hinjewadi – 12.5% (Tech hub)<br>
+            • Wakad – 13.1% (Infra growth)<br><br><em>These areas show highest ROI potential.</em>`;
+        }
+        if (q.includes('compare')) {
+            return `⚖️ <strong>Area Comparison:</strong><br>Try: "Compare Baner vs Kharadi"<br><br><em>I’ll show prices and growth comparison.</em>`;
+        }
+        return `🤖 <strong>Hi, I'm your PuneProp AI assistant!</strong><br><br>
+        Ask about property prices, growth, or investments.<br><br>
+        Example:<br>• "Kothrud prices"<br>• "Best growth areas"<br>• "Compare Baner and Aundh"<br><br><em>How can I help you today? 🏡</em>`;
+    }
+
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+</script>
+
+    
+</body>
+</html>

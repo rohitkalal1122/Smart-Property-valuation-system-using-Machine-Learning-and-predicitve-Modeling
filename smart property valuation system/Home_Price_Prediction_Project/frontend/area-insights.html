@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pune Area Insights | PunePropAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .area-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .area-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #3a86ff 0%, #8338ec 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-home text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-gray-800">PunePropAI</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Home</a>
+                <a href="market-trends.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Market Trends</a>
+                <a href="area-insights.html" class="text-blue-600 font-medium transition-colors">Area Insights</a>
+                <a href="resources.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Resources</a>
+                <a href="about.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
+            </div>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-md">
+                Sign In
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-700 py-16 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Pune Area Insights</h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                Detailed analysis of Pune's top residential localities with price trends, amenities, and investment potential
+            </p>
+        </div>
+    </section>
+
+    <!-- Area Categories -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Explore Pune by Category</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Find the perfect neighborhood based on your lifestyle and budget preferences</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="area-card bg-white p-6 text-center cursor-pointer hover:shadow-lg">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-laptop-code text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">IT Corridors</h3>
+                    <p class="text-sm text-gray-600">Hinjewadi, Kharadi, Viman Nagar</p>
+                </div>
+                
+                <div class="area-card bg-white p-6 text-center cursor-pointer hover:shadow-lg">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-home text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Residential</h3>
+                    <p class="text-sm text-gray-600">Kothrud, Aundh, Model Colony</p>
+                </div>
+                
+                <div class="area-card bg-white p-6 text-center cursor-pointer hover:shadow-lg">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-graduation-cap text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Educational Hubs</h3>
+                    <p class="text-sm text-gray-600">Shivajinagar, FC Road, Deccan</p>
+                </div>
+                
+                <div class="area-card bg-white p-6 text-center cursor-pointer hover:shadow-lg">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-wallet text-orange-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Budget-Friendly</h3>
+                    <p class="text-sm text-gray-600">Hadapsar, Moshi, Pimpri</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Area Analysis -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Detailed Area Analysis</h2>
+            
+            <!-- Kothrud -->
+            <div class="glass-card p-8 mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center mb-4">
+                            <h3 class="text-2xl font-bold text-gray-800 mr-4">Kothrud</h3>
+                            <span class="price-tag">₹8,500/sq.ft</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            Kothrud is one of Pune's most established residential areas, known for its excellent educational institutions, good connectivity, and family-friendly environment. The area has seen consistent growth and offers a balanced mix of modern amenities and traditional Pune culture.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">Key Features</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><i class="fas fa-school text-blue-500 mr-2"></i>Top schools & colleges</li>
+                                    <li><i class="fas fa-shopping-cart text-blue-500 mr-2"></i>Multiple shopping centers</li>
+                                    <li><i class="fas fa-tree text-blue-500 mr-2"></i>Green spaces & parks</li>
+                                    <li><i class="fas fa-subway text-blue-500 mr-2"></i>Good public transport</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">Market Stats</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><strong>Growth:</strong> 10.2% YoY</li>
+                                    <li><strong>Rental Yield:</strong> 2.8-3.2%</li>
+                                    <li><strong>Inventory:</strong> Moderate</li>
+                                    <li><strong>Demand:</strong> High</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <h4 class="font-semibold text-gray-800 mb-3">Investment Potential</h4>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Appreciation Potential</span>
+                                <span class="font-semibold">High</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Rental Demand</span>
+                                <span class="font-semibold">Medium</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Infrastructure</span>
+                                <span class="font-semibold">Excellent</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-6">
+                            <div class="text-2xl font-bold text-green-600">8.5/10</div>
+                            <div class="text-sm text-gray-600">Overall Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hinjewadi -->
+            <div class="glass-card p-8 mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center mb-4">
+                            <h3 class="text-2xl font-bold text-gray-800 mr-4">Hinjewadi</h3>
+                            <span class="price-tag">₹7,200/sq.ft</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            Hinjewadi is Pune's primary IT hub, home to Rajiv Gandhi Infotech Park. The area offers excellent opportunities for IT professionals with high rental demand and strong capital appreciation. Ongoing infrastructure development is improving connectivity and amenities.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">Key Features</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><i class="fas fa-laptop-house text-green-500 mr-2"></i>Major IT park</li>
+                                    <li><i class="fas fa-bus text-green-500 mr-2"></i>Company transport</li>
+                                    <li><i class="fas fa-utensils text-green-500 mr-2"></i>Food courts & malls</li>
+                                    <li><i class="fas fa-road text-green-500 mr-2"></i>Mumbai-Bangalore highway</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">Market Stats</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><strong>Growth:</strong> 12.5% YoY</li>
+                                    <li><strong>Rental Yield:</strong> 3.0-3.5%</li>
+                                    <li><strong>Inventory:</strong> High</li>
+                                    <li><strong>Demand:</strong> Very High</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <h4 class="font-semibold text-gray-800 mb-3">Investment Potential</h4>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Appreciation Potential</span>
+                                <span class="font-semibold">Very High</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Rental Demand</span>
+                                <span class="font-semibold">Very High</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Infrastructure</span>
+                                <span class="font-semibold">Good</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-6">
+                            <div class="text-2xl font-bold text-green-600">9.2/10</div>
+                            <div class="text-sm text-gray-600">Overall Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Viman Nagar -->
+            <div class="glass-card p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center mb-4">
+                            <h3 class="text-2xl font-bold text-gray-800 mr-4">Viman Nagar</h3>
+                            <span class="price-tag">₹9,800/sq.ft</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            Viman Nagar is a premium residential locality known for its proximity to the airport and upscale amenities. The area offers luxury living with high-end restaurants, shopping malls, and excellent connectivity to both IT parks and the city center.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">Key Features</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><i class="fas fa-plane text-purple-500 mr-2"></i>Near airport</li>
+                                    <li><i class="fas fa-hotel text-purple-500 mr-2"></i>Luxury amenities</li>
+                                    <li><i class="fas fa-store text-purple-500 mr-2"></i>High-end shopping</li>
+                                    <li><i class="fas fa-car text-purple-500 mr-2"></i>Excellent connectivity</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700 mb-2">Market Stats</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><strong>Growth:</strong> 9.8% YoY</li>
+                                    <li><strong>Rental Yield:</strong> 2.5-3.0%</li>
+                                    <li><strong>Inventory:</strong> Low</li>
+                                    <li><strong>Demand:</strong> High</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-6 rounded-xl">
+                        <h4 class="font-semibold text-gray-800 mb-3">Investment Potential</h4>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Appreciation Potential</span>
+                                <span class="font-semibold">High</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Rental Demand</span>
+                                <span class="font-semibold">Medium</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 55%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Infrastructure</span>
+                                <span class="font-semibold">Excellent</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-6">
+                            <div class="text-2xl font-bold text-green-600">8.0/10</div>
+                            <div class="text-sm text-gray-600">Overall Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="text-xl font-bold">PunePropAI</span>
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                        AI-powered property valuation for Pune homeowners, buyers, and real estate professionals.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home Valuation</a></li>
+                        <li><a href="market-trends.html" class="hover:text-white transition-colors">Market Trends</a></li>
+                        <li><a href="area-insights.html" class="hover:text-white transition-colors">Area Insights</a></li>
+                        <li><a href="resources.html" class="hover:text-white transition-colors">Buyer Resources</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> Pune, Maharashtra</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +91 98765 43210</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@punepropai.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Newsletter</h3>
+                    <p class="text-gray-300 text-sm mb-3">Get latest Pune real estate insights</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 rounded-l text-gray-800 w-full">
+                        <button class="bg-blue-500 hover:bg-blue-600 px-4 rounded-r text-white">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2024 PunePropAI. All rights reserved. | Data sourced from proprietary AI models and market research</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

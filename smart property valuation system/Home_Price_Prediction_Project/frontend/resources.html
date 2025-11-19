@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Resources | PunePropAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .resource-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            border-left: 4px solid #3a86ff;
+        }
+        
+        .calculator-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #3a86ff;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #3a86ff;
+            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-home text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-gray-800">PunePropAI</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Home</a>
+                <a href="market-trends.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Market Trends</a>
+                <a href="area-insights.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Area Insights</a>
+                <a href="resources.html" class="text-blue-600 font-medium transition-colors">Resources</a>
+                <a href="about.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
+            </div>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-md">
+                Sign In
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-700 py-16 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Real Estate Resources</h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                Essential guides, calculators, and tools to make informed property decisions in Pune
+            </p>
+        </div>
+    </section>
+
+    <!-- Tools & Calculators -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Property Calculators & Tools</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- EMI Calculator Card -->
+                <div class="resource-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-calculator text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">EMI Calculator</h3>
+                    <p class="text-gray-600 mb-4">Calculate your home loan EMI with different interest rates and tenure options</p>
+                    <button onclick="openCalculator('emi')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full transition-colors">
+                        Calculate EMI
+                    </button>
+                </div>
+                
+                <!-- ROI Calculator Card -->
+                <div class="resource-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">ROI Calculator</h3>
+                    <p class="text-gray-600 mb-4">Calculate return on investment for property with appreciation and rental income</p>
+                    <button onclick="openCalculator('roi')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-full transition-colors">
+                        Calculate ROI
+                    </button>
+                </div>
+                
+                <!-- Affordability Calculator Card -->
+                <div class="resource-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-home text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Affordability Calculator</h3>
+                    <p class="text-gray-600 mb-4">Determine how much property you can afford based on your income and expenses</p>
+                    <button onclick="openCalculator('affordability')" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg w-full transition-colors">
+                        Check Affordability
+                    </button>
+                </div>
+            </div>
+
+            <!-- EMI Calculator -->
+            <div id="emi-calculator" class="calculator-container hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Home Loan EMI Calculator</h3>
+                    <button onclick="closeCalculator('emi')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <div class="input-group">
+                            <label for="loan-amount">Loan Amount (₹)</label>
+                            <input type="number" id="loan-amount" placeholder="50,00,000" min="100000" max="500000000" value="5000000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="interest-rate">Interest Rate (% per annum)</label>
+                            <input type="number" id="interest-rate" placeholder="8.5" min="1" max="20" step="0.1" value="8.5">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="loan-tenure">Loan Tenure (Years)</label>
+                            <input type="number" id="loan-tenure" placeholder="20" min="1" max="30" value="20">
+                        </div>
+                        
+                        <button onclick="calculateEMI()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg w-full font-semibold transition-colors">
+                            Calculate EMI
+                        </button>
+                    </div>
+                    
+                    <div id="emi-result" class="result-card hidden">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">EMI Calculation Result</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Monthly EMI</span>
+                                <span class="font-bold text-blue-600" id="monthly-emi">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Total Interest Payable</span>
+                                <span class="font-bold text-red-600" id="total-interest">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Total Payment (Principal + Interest)</span>
+                                <span class="font-bold text-green-600" id="total-payment">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Interest to Principal Ratio</span>
+                                <span class="font-bold text-purple-600" id="interest-ratio">0:0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h5 class="font-semibold text-gray-700 mb-2">Year-wise Breakdown</h5>
+                            <div id="emi-breakdown" class="text-sm text-gray-600">
+                                <!-- Breakdown will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROI Calculator -->
+            <div id="roi-calculator" class="calculator-container hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Property ROI Calculator</h3>
+                    <button onclick="closeCalculator('roi')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <div class="input-group">
+                            <label for="property-price">Property Price (₹)</label>
+                            <input type="number" id="property-price" placeholder="1,00,00,000" value="10000000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="down-payment">Down Payment (₹)</label>
+                            <input type="number" id="down-payment" placeholder="20,00,000" value="2000000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="annual-rent">Annual Rental Income (₹)</label>
+                            <input type="number" id="annual-rent" placeholder="3,60,000" value="360000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="annual-appreciation">Expected Annual Appreciation (%)</label>
+                            <input type="number" id="annual-appreciation" placeholder="8" value="8" step="0.1">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="investment-period">Investment Period (Years)</label>
+                            <input type="number" id="investment-period" placeholder="5" value="5" min="1" max="30">
+                        </div>
+                        
+                        <button onclick="calculateROI()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg w-full font-semibold transition-colors">
+                            Calculate ROI
+                        </button>
+                    </div>
+                    
+                    <div id="roi-result" class="result-card hidden">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">ROI Calculation Result</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Total Investment</span>
+                                <span class="font-bold text-blue-600" id="total-investment">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Property Future Value</span>
+                                <span class="font-bold text-green-600" id="future-value">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Total Rental Income</span>
+                                <span class="font-bold text-purple-600" id="total-rental">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Total Return</span>
+                                <span class="font-bold text-green-600" id="total-return">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Annualized ROI</span>
+                                <span class="font-bold text-blue-600" id="annual-roi">0%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Net Profit</span>
+                                <span class="font-bold text-green-600" id="net-profit">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Affordability Calculator -->
+            <div id="affordability-calculator" class="calculator-container hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Property Affordability Calculator</h3>
+                    <button onclick="closeCalculator('affordability')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <div class="input-group">
+                            <label for="annual-income">Annual Income (₹)</label>
+                            <input type="number" id="annual-income" placeholder="12,00,000" value="1200000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="monthly-expenses">Monthly Expenses (₹)</label>
+                            <input type="number" id="monthly-expenses" placeholder="40,000" value="40000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="existing-emis">Existing EMIs (₹)</label>
+                            <input type="number" id="existing-emis" placeholder="15,000" value="15000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="down-payment-available">Down Payment Available (₹)</label>
+                            <input type="number" id="down-payment-available" placeholder="10,00,000" value="1000000">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="interest-rate-affordability">Expected Interest Rate (%)</label>
+                            <input type="number" id="interest-rate-affordability" placeholder="8.5" value="8.5" step="0.1">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="loan-tenure-affordability">Preferred Loan Tenure (Years)</label>
+                            <input type="number" id="loan-tenure-affordability" placeholder="20" value="20" min="5" max="30">
+                        </div>
+                        
+                        <button onclick="calculateAffordability()" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg w-full font-semibold transition-colors">
+                            Check Affordability
+                        </button>
+                    </div>
+                    
+                    <div id="affordability-result" class="result-card hidden">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Affordability Result</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Maximum Loan Eligibility</span>
+                                <span class="font-bold text-blue-600" id="max-loan">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Maximum Property Price</span>
+                                <span class="font-bold text-green-600" id="max-property-price">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Recommended EMI</span>
+                                <span class="font-bold text-purple-600" id="recommended-emi">₹0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">EMI to Income Ratio</span>
+                                <span class="font-bold text-yellow-600" id="emi-ratio">0%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Affordability Status</span>
+                                <span class="font-bold text-green-600" id="affordability-status">Good</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-yellow-50 rounded-lg">
+                            <h5 class="font-semibold text-yellow-800 mb-2">💡 Recommendation</h5>
+                            <p class="text-sm text-yellow-700" id="affordability-recommendation">
+                                Based on your financial profile, here are suitable property options...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Buyer's Guide -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="glass-card p-8 mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Home Buyer's Guide</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-blue-600">🏠 Step-by-Step Buying Process</h3>
+                        <div class="space-y-4">
+                            <div class="step-card">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center mr-3 font-semibold">1</div>
+                                    <h4 class="font-semibold text-gray-800">Budget Planning</h4>
+                                </div>
+                                <p class="text-gray-600 text-sm">Determine your budget, including down payment, registration costs, and interior expenses.</p>
+                            </div>
+                            
+                            <div class="step-card">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center mr-3 font-semibold">2</div>
+                                    <h4 class="font-semibold text-gray-800">Location Selection</h4>
+                                </div>
+                                <p class="text-gray-600 text-sm">Choose the right locality based on your budget, workplace, and lifestyle preferences.</p>
+                            </div>
+                            
+                            <div class="step-card">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center mr-3 font-semibold">3</div>
+                                    <h4 class="font-semibold text-gray-800">Property Search</h4>
+                                </div>
+                                <p class="text-gray-600 text-sm">Shortlist properties, visit sites, and verify builder credentials and approvals.</p>
+                            </div>
+                            
+                            <div class="step-card">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center mr-3 font-semibold">4</div>
+                                    <h4 class="font-semibold text-gray-800">Legal Verification</h4>
+                                </div>
+                                <p class="text-gray-600 text-sm">Check all legal documents, title clearance, and building approvals with a lawyer.</p>
+                            </div>
+                            
+                            <div class="step-card">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center mr-3 font-semibold">5</div>
+                                    <h4 class="font-semibold text-gray-800">Home Loan & Registration</h4>
+                                </div>
+                                <p class="text-gray-600 text-sm">Finalize home loan, complete registration, and take possession of your property.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-green-600">💰 Cost Breakdown</h3>
+                        <div class="bg-gray-50 p-6 rounded-xl mb-6">
+                            <h4 class="font-semibold text-gray-800 mb-4">Additional Costs to Consider</h4>
+                            <ul class="space-y-3 text-sm text-gray-600">
+                                <li class="flex justify-between">
+                                    <span>Stamp Duty & Registration</span>
+                                    <span class="font-semibold">5-7% of property value</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>GST (Under Construction)</span>
+                                    <span class="font-semibold">1-5% of property value</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>Legal & Documentation</span>
+                                    <span class="font-semibold">₹15,000 - ₹50,000</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>Maintenance Deposit</span>
+                                    <span class="font-semibold">₹50,000 - ₹2,00,000</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>Interior & Furnishing</span>
+                                    <span class="font-semibold">₹5-15 Lakhs</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <h3 class="text-xl font-semibold mb-4 text-red-600">⚠️ Common Pitfalls to Avoid</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-red-500 mt-1 mr-3"></i>
+                                <span>Not verifying builder track record and RERA registration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-red-500 mt-1 mr-3"></i>
+                                <span>Underestimating additional costs beyond property price</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-red-500 mt-1 mr-3"></i>
+                                <span>Not checking actual carpet area vs built-up area</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-red-500 mt-1 mr-3"></i>
+                                <span>Skipping legal due diligence to save costs</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-red-500 mt-1 mr-3"></i>
+                                <span>Not considering future infrastructure projects</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Legal & Documentation -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Legal & Documentation Guide</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-purple-600">📄 Essential Documents Checklist</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-purple-500">
+                                <h4 class="font-semibold text-gray-800 mb-2">Title Documents</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• Title Deed & Mother Deed</li>
+                                    <li>• Encumbrance Certificate</li>
+                                    <li>• Property Tax Receipts</li>
+                                    <li>• Khata Certificate & Extract</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                <h4 class="font-semibold text-gray-800 mb-2">Approval Documents</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• RERA Registration</li>
+                                    <li>• Building Approval Plan</li>
+                                    <li>• Occupancy Certificate</li>
+                                    <li>• NOC from Fire Department</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-green-500">
+                                <h4 class="font-semibold text-gray-800 mb-2">Financial Documents</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• Sale Agreement</li>
+                                    <li>• Payment Receipts</li>
+                                    <li>• Home Loan Sanction Letter</li>
+                                    <li>• GST Registration (if applicable)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-orange-600">🏛️ Government Regulations</h3>
+                        <div class="space-y-4">
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">RERA (Real Estate Regulatory Authority)</h4>
+                                <p class="text-sm text-gray-600">Mandatory for projects above 500 sq.m. Protects homebuyers' interests and ensures project completion.</p>
+                            </div>
+                            
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">Stamp Duty & Registration</h4>
+                                <p class="text-sm text-gray-600">Currently 5-7% in Maharashtra. Must be paid within 4 months of agreement execution.</p>
+                            </div>
+                            
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">GST on Under-Construction</h4>
+                                <p class="text-sm text-gray-600">1% for affordable housing, 5% for other residential properties on under-construction units.</p>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-gray-800 mb-2">PMAY Benefits</h4>
+                                <p class="text-sm text-gray-600">Credit-linked subsidy scheme available for first-time home buyers in certain income categories.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="text-xl font-bold">PunePropAI</span>
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                        AI-powered property valuation for Pune homeowners, buyers, and real estate professionals.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home Valuation</a></li>
+                        <li><a href="market-trends.html" class="hover:text-white transition-colors">Market Trends</a></li>
+                        <li><a href="area-insights.html" class="hover:text-white transition-colors">Area Insights</a></li>
+                        <li><a href="resources.html" class="hover:text-white transition-colors">Buyer Resources</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> Pune, Maharashtra</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +91 98765 43210</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@punepropai.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Newsletter</h3>
+                    <p class="text-gray-300 text-sm mb-3">Get latest Pune real estate insights</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 rounded-l text-gray-800 w-full">
+                        <button class="bg-blue-500 hover:bg-blue-600 px-4 rounded-r text-white">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2024 PunePropAI. All rights reserved. | Data sourced from proprietary AI models and market research</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Calculator Management
+        function openCalculator(type) {
+            // Hide all calculators first
+            document.getElementById('emi-calculator').classList.add('hidden');
+            document.getElementById('roi-calculator').classList.add('hidden');
+            document.getElementById('affordability-calculator').classList.add('hidden');
+            
+            // Show selected calculator
+            document.getElementById(`${type}-calculator`).classList.remove('hidden');
+            
+            // Scroll to calculator
+            document.getElementById(`${type}-calculator`).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeCalculator(type) {
+            document.getElementById(`${type}-calculator`).classList.add('hidden');
+        }
+
+        // Format currency in Indian format
+        function formatCurrency(amount) {
+            return '₹' + amount.toLocaleString('en-IN');
+        }
+
+        // EMI Calculator Function
+        function calculateEMI() {
+            const loanAmount = parseFloat(document.getElementById('loan-amount').value);
+            const interestRate = parseFloat(document.getElementById('interest-rate').value);
+            const loanTenure = parseFloat(document.getElementById('loan-tenure').value);
+            
+            const monthlyInterest = interestRate / 12 / 100;
+            const numberOfPayments = loanTenure * 12;
+            
+            // EMI Formula: [P x R x (1+R)^N]/[(1+R)^N-1]
+            const emi = loanAmount * monthlyInterest * Math.pow(1 + monthlyInterest, numberOfPayments) / 
+                       (Math.pow(1 + monthlyInterest, numberOfPayments) - 1);
+            
+            const totalPayment = emi * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+            const interestRatio = (totalInterest / loanAmount).toFixed(2);
+            
+            // Display results
+            document.getElementById('monthly-emi').textContent = formatCurrency(Math.round(emi));
+            document.getElementById('total-interest').textContent = formatCurrency(Math.round(totalInterest));
+            document.getElementById('total-payment').textContent = formatCurrency(Math.round(totalPayment));
+            document.getElementById('interest-ratio').textContent = `1:${interestRatio}`;
+            
+            // Generate breakdown
+            let breakdownHTML = '';
+            let remainingPrincipal = loanAmount;
+            
+            for (let year = 1; year <= loanTenure; year++) {
+                let yearlyInterest = 0;
+                let yearlyPrincipal = 0;
+                
+                for (let month = 1; month <= 12; month++) {
+                    const monthlyInterestPayment = remainingPrincipal * monthlyInterest;
+                    const monthlyPrincipalPayment = emi - monthlyInterestPayment;
+                    
+                    yearlyInterest += monthlyInterestPayment;
+                    yearlyPrincipal += monthlyPrincipalPayment;
+                    remainingPrincipal -= monthlyPrincipalPayment;
+                }
+                
+                breakdownHTML += `
+                    <div class="flex justify-between text-xs py-1 border-b">
+                        <span>Year ${year}</span>
+                        <span>Interest: ${formatCurrency(Math.round(yearlyInterest))}</span>
+                        <span>Principal: ${formatCurrency(Math.round(yearlyPrincipal))}</span>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('emi-breakdown').innerHTML = breakdownHTML;
+            document.getElementById('emi-result').classList.remove('hidden');
+        }
+
+        // ROI Calculator Function
+        function calculateROI() {
+            const propertyPrice = parseFloat(document.getElementById('property-price').value);
+            const downPayment = parseFloat(document.getElementById('down-payment').value);
+            const annualRent = parseFloat(document.getElementById('annual-rent').value);
+            const annualAppreciation = parseFloat(document.getElementById('annual-appreciation').value);
+            const investmentPeriod = parseFloat(document.getElementById('investment-period').value);
+            
+            const loanAmount = propertyPrice - downPayment;
+            const totalInvestment = downPayment; // Simplified - excluding other costs
+            
+            // Calculate future property value
+            const futureValue = propertyPrice * Math.pow(1 + annualAppreciation/100, investmentPeriod);
+            
+            // Calculate total rental income (simplified)
+            const totalRentalIncome = annualRent * investmentPeriod;
+            
+            // Calculate total return
+            const totalReturn = futureValue + totalRentalIncome - loanAmount;
+            const netProfit = totalReturn - totalInvestment;
+            const annualizedROI = (Math.pow(totalReturn / totalInvestment, 1/investmentPeriod) - 1) * 100;
+            
+            // Display results
+            document.getElementById('total-investment').textContent = formatCurrency(Math.round(totalInvestment));
+            document.getElementById('future-value').textContent = formatCurrency(Math.round(futureValue));
+            document.getElementById('total-rental').textContent = formatCurrency(Math.round(totalRentalIncome));
+            document.getElementById('total-return').textContent = formatCurrency(Math.round(totalReturn));
+            document.getElementById('annual-roi').textContent = annualizedROI.toFixed(2) + '%';
+            document.getElementById('net-profit').textContent = formatCurrency(Math.round(netProfit));
+            
+            document.getElementById('roi-result').classList.remove('hidden');
+        }
+
+        // Affordability Calculator Function
+        function calculateAffordability() {
+            const annualIncome = parseFloat(document.getElementById('annual-income').value);
+            const monthlyExpenses = parseFloat(document.getElementById('monthly-expenses').value);
+            const existingEMIs = parseFloat(document.getElementById('existing-emis').value);
+            const downPaymentAvailable = parseFloat(document.getElementById('down-payment-available').value);
+            const interestRate = parseFloat(document.getElementById('interest-rate-affordability').value);
+            const loanTenure = parseFloat(document.getElementById('loan-tenure-affordability').value);
+            
+            const monthlyIncome = annualIncome / 12;
+            const availableForEMI = monthlyIncome * 0.5 - existingEMIs; // 50% of income for EMI
+            
+            // Calculate maximum loan amount based on available EMI
+            const monthlyInterest = interestRate / 12 / 100;
+            const numberOfPayments = loanTenure * 12;
+            
+            const maxLoanAmount = availableForEMI * (Math.pow(1 + monthlyInterest, numberOfPayments) - 1) / 
+                                (monthlyInterest * Math.pow(1 + monthlyInterest, numberOfPayments));
+            
+            const maxPropertyPrice = maxLoanAmount + downPaymentAvailable;
+            const emiToIncomeRatio = (availableForEMI / monthlyIncome) * 100;
+            
+            // Determine affordability status
+            let affordabilityStatus = '';
+            let recommendation = '';
+            
+            if (emiToIncomeRatio <= 30) {
+                affordabilityStatus = 'Excellent';
+                recommendation = 'You have strong financial capacity. Consider premium properties in established areas.';
+            } else if (emiToIncomeRatio <= 40) {
+                affordabilityStatus = 'Good';
+                recommendation = 'Your financial profile is healthy. You can explore mid-range properties.';
+            } else if (emiToIncomeRatio <= 50) {
+                affordabilityStatus = 'Moderate';
+                recommendation = 'Consider more affordable areas or increase your down payment.';
+            } else {
+                affordabilityStatus = 'Limited';
+                recommendation = 'Focus on budget-friendly areas or consider waiting to improve your financial position.';
+            }
+            
+            // Display results
+            document.getElementById('max-loan').textContent = formatCurrency(Math.round(maxLoanAmount));
+            document.getElementById('max-property-price').textContent = formatCurrency(Math.round(maxPropertyPrice));
+            document.getElementById('recommended-emi').textContent = formatCurrency(Math.round(availableForEMI));
+            document.getElementById('emi-ratio').textContent = emiToIncomeRatio.toFixed(1) + '%';
+            document.getElementById('affordability-status').textContent = affordabilityStatus;
+            document.getElementById('affordability-status').className = affordabilityStatus === 'Excellent' || affordabilityStatus === 'Good' ? 
+                'font-bold text-green-600' : 'font-bold text-yellow-600';
+            document.getElementById('affordability-recommendation').textContent = recommendation;
+            
+            document.getElementById('affordability-result').classList.remove('hidden');
+        }
+
+        // Initialize with some default calculations
+        document.addEventListener('DOMContentLoaded', function() {
+            // You can pre-calculate some examples if needed
+        });
+    </script>
+</body>
+</html>

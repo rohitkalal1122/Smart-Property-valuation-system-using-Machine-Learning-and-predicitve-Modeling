@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pune Market Trends | PunePropAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3a86ff 0%, #8338ec 100%);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+        .trend-neutral { color: #6b7280; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-home text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-gray-800">PunePropAI</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Home</a>
+                <a href="market-trends.html" class="text-blue-600 font-medium transition-colors">Market Trends</a>
+                <a href="area-insights.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Area Insights</a>
+                <a href="resources.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Resources</a>
+                <a href="about.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">About Us</a>
+            </div>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-md">
+                Sign In
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-700 py-16 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Pune Real Estate Market Trends 2024</h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                Comprehensive analysis of Pune's property market with data-driven insights and future projections
+            </p>
+        </div>
+    </section>
+
+    <!-- Market Overview -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="glass-card p-8 mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Current Market Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-white p-6 text-center">
+                        <div class="text-2xl font-bold text-blue-600">12.5%</div>
+                        <div class="text-gray-600 mt-2">Avg. Price Increase (YoY)</div>
+                        <div class="text-sm trend-up mt-1"><i class="fas fa-arrow-up mr-1"></i>+2.1% from last quarter</div>
+                    </div>
+                    <div class="stat-card bg-white p-6 text-center">
+                        <div class="text-2xl font-bold text-green-600">42 days</div>
+                        <div class="text-gray-600 mt-2">Avg. Time on Market</div>
+                        <div class="text-sm trend-down mt-1"><i class="fas fa-arrow-down mr-1"></i>-5 days from 2023</div>
+                    </div>
+                    <div class="stat-card bg-white p-6 text-center">
+                        <div class="text-2xl font-bold text-purple-600">₹7,850</div>
+                        <div class="text-gray-600 mt-2">Avg. Price per Sq.Ft</div>
+                        <div class="text-sm trend-up mt-1"><i class="fas fa-arrow-up mr-1"></i>+8.5% from 2023</div>
+                    </div>
+                    <div class="stat-card bg-white p-6 text-center">
+                        <div class="text-2xl font-bold text-orange-500">3.2%</div>
+                        <div class="text-gray-600 mt-2">Avg. Rental Yield</div>
+                        <div class="text-sm trend-neutral mt-1"><i class="fas fa-minus mr-1"></i>Stable from last year</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Trends -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Pune Property Price Trends</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-card p-6">
+                    <h3 class="text-xl font-semibold mb-4">Quarterly Price Movement (2023-2024)</h3>
+                    <canvas id="priceTrendChart" height="250"></canvas>
+                </div>
+                
+                <div class="glass-card p-6">
+                    <h3 class="text-xl font-semibold mb-4">Area-wise Growth Comparison</h3>
+                    <canvas id="areaGrowthChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Insights -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Key Market Insights</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-blue-600">📈 Growth Drivers</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>IT Sector Expansion:</strong> 15% YoY growth in IT hiring driving housing demand</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>Infrastructure Projects:</strong> Metro Phase 3 completion boosting connectivity</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>Educational Hub:</strong> 25+ new educational institutions attracting families</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>Startup Ecosystem:</strong> 40% increase in startup funding creating employment</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-red-600">⚠️ Market Challenges</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-3"></i>
+                                <span><strong>Inventory Pressure:</strong> 18% increase in unsold inventory in premium segments</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-3"></i>
+                                <span><strong>Interest Rates:</strong> RBI rate hikes affecting affordable housing demand</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-3"></i>
+                                <span><strong>Construction Costs:</strong> 12% increase in raw material costs impacting new projects</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Projections -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">2024-2025 Market Projections</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-blue-50 rounded-xl">
+                        <div class="text-4xl font-bold text-blue-600 mb-2">10-12%</div>
+                        <div class="text-gray-700 font-semibold">Expected Price Appreciation</div>
+                        <div class="text-sm text-gray-500 mt-2">Driven by infrastructure and IT growth</div>
+                    </div>
+                    
+                    <div class="text-center p-6 bg-green-50 rounded-xl">
+                        <div class="text-4xl font-bold text-green-600 mb-2">25,000+</div>
+                        <div class="text-gray-700 font-semibold">New Housing Units</div>
+                        <div class="text-sm text-gray-500 mt-2">Expected new supply in 2024</div>
+                    </div>
+                    
+                    <div class="text-center p-6 bg-purple-50 rounded-xl">
+                        <div class="text-4xl font-bold text-purple-600 mb-2">8-10%</div>
+                        <div class="text-gray-700 font-semibold">Rental Growth</div>
+                        <div class="text-sm text-gray-500 mt-2">IT corridor areas leading growth</div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-4">Investment Hotspots for 2024</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 border-l-4 border-green-500 bg-green-50">
+                            <h4 class="font-semibold text-gray-800">Kharadi & Hinjewadi</h4>
+                            <p class="text-sm text-gray-600">IT corridor expansion driving 14%+ growth</p>
+                        </div>
+                        <div class="p-4 border-l-4 border-blue-500 bg-blue-50">
+                            <h4 class="font-semibold text-gray-800">Wakad & Baner</h4>
+                            <p class="text-sm text-gray-600">Infrastructure development boosting values</p>
+                        </div>
+                        <div class="p-4 border-l-4 border-purple-500 bg-purple-50">
+                            <h4 class="font-semibold text-gray-800">Hadapsar & Undri</h4>
+                            <p class="text-sm text-gray-600">Affordable segment with 12% growth potential</p>
+                        </div>
+                        <div class="p-4 border-l-4 border-orange-500 bg-orange-50">
+                            <h4 class="font-semibold text-gray-800">Viman Nagar</h4>
+                            <p class="text-sm text-gray-600">Premium segment with stable 9-10% appreciation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="text-xl font-bold">PunePropAI</span>
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                        AI-powered property valuation for Pune homeowners, buyers, and real estate professionals.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home Valuation</a></li>
+                        <li><a href="market-trends.html" class="hover:text-white transition-colors">Market Trends</a></li>
+                        <li><a href="area-insights.html" class="hover:text-white transition-colors">Area Insights</a></li>
+                        <li><a href="resources.html" class="hover:text-white transition-colors">Buyer Resources</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> Pune, Maharashtra</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +91 98765 43210</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@punepropai.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Newsletter</h3>
+                    <p class="text-gray-300 text-sm mb-3">Get latest Pune real estate insights</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 rounded-l text-gray-800 w-full">
+                        <button class="bg-blue-500 hover:bg-blue-600 px-4 rounded-r text-white">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2024 PunePropAI. All rights reserved. | Data sourced from proprietary AI models and market research</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Price Trend Chart
+        const priceTrendCtx = document.getElementById('priceTrendChart').getContext('2d');
+        new Chart(priceTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['Q1 2023', 'Q2 2023', 'Q3 2023', 'Q4 2023', 'Q1 2024', 'Q2 2024'],
+                datasets: [{
+                    label: 'Price per Sq.Ft (₹)',
+                    data: [7200, 7350, 7520, 7680, 7850, 8020],
+                    borderColor: '#3a86ff',
+                    backgroundColor: 'rgba(58, 134, 255, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Steady Quarterly Growth'
+                    }
+                }
+            }
+        });
+
+        // Area Growth Chart
+        const areaGrowthCtx = document.getElementById('areaGrowthChart').getContext('2d');
+        new Chart(areaGrowthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Kharadi', 'Hinjewadi', 'Wakad', 'Kothrud', 'Viman Nagar', 'Baner', 'Hadapsar'],
+                datasets: [{
+                    label: 'Growth Rate (%)',
+                    data: [14.3, 12.5, 13.1, 10.2, 9.8, 11.2, 7.5],
+                    backgroundColor: [
+                        '#10b981', '#3a86ff', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#6b7280'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Area-wise Annual Growth Rates'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

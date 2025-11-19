@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | PunePropAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .team-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .value-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            border-top: 4px solid #3a86ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-home text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-gray-800">PunePropAI</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Home</a>
+                <a href="market-trends.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Market Trends</a>
+                <a href="area-insights.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Area Insights</a>
+                <a href="resources.html" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Resources</a>
+                <a href="about.html" class="text-blue-600 font-medium transition-colors">About Us</a>
+            </div>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all shadow-md">
+                Sign In
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-700 py-16 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">About PunePropAI</h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                Revolutionizing Pune real estate with AI-powered property valuation and market intelligence
+            </p>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="glass-card p-8 mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
+                        <p class="text-gray-600 mb-4">
+                            PunePropAI was born from a simple observation: the Pune real estate market was becoming increasingly complex, with home buyers and sellers struggling to get accurate, data-driven property valuations.
+                        </p>
+                        <p class="text-gray-600 mb-4">
+                            Founded in 2023 by a team of data scientists and real estate experts, we set out to create a platform that combines cutting-edge artificial intelligence with deep local market knowledge to provide the most accurate property valuations in Pune.
+                        </p>
+                        <p class="text-gray-600">
+                            Today, we've helped over <strong>5,000+ homeowners</strong> make informed decisions about their properties, with our AI models analyzing thousands of data points to deliver valuations with <strong>95% accuracy</strong>.
+                        </p>
+                    </div>
+                    <div class="bg-blue-50 p-8 rounded-xl">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Our Mission</h3>
+                        <p class="text-gray-600 mb-6">
+                            To democratize access to accurate real estate information and empower every Pune citizen to make confident property decisions through transparent, data-driven insights.
+                        </p>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Our Vision</h3>
+                        <p class="text-gray-600">
+                            To become Pune's most trusted real estate intelligence platform, setting new standards for accuracy, transparency, and user experience in property valuation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Our Values</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="value-card">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bullseye text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Accuracy First</h3>
+                    <p class="text-gray-600">We prioritize precision in every valuation, constantly refining our AI models with the latest market data.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Transparency</h3>
+                    <p class="text-gray-600">We believe in complete transparency about how our valuations are calculated and what factors influence them.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">User-Centric</h3>
+                    <p class="text-gray-600">Every feature we build is designed with our users' needs at the forefront, making complex data accessible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Our Technology</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">🤖 AI-Powered Valuation Engine</h3>
+                        <p class="text-gray-600 mb-4">
+                            Our proprietary machine learning algorithms analyze 50+ data points for each property valuation, including:
+                        </p>
+                        <ul class="text-gray-600 space-y-2 mb-6">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>Location Factors:</strong> Proximity to IT parks, schools, hospitals, and transportation</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>Property Characteristics:</strong> Size, age, amenities, and construction quality</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>Market Dynamics:</strong> Recent sales, price trends, and demand patterns</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span><strong>External Factors:</strong> Infrastructure projects, economic indicators, and policy changes</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">📊 Data Sources & Accuracy</h3>
+                        <div class="bg-gray-50 p-6 rounded-xl mb-6">
+                            <h4 class="font-semibold text-gray-800 mb-3">Our Data Ecosystem</h4>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-600">8,200+</div>
+                                    <div class="text-gray-600">Properties Analyzed</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-green-600">95%</div>
+                                    <div class="text-gray-600">Valuation Accuracy</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-purple-600">50+</div>
+                                    <div class="text-gray-600">Data Points per Property</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-orange-500">15</div>
+                                    <div class="text-gray-600">Pune Localities Covered</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-800 mb-3">Continuous Learning</h4>
+                        <p class="text-gray-600 text-sm">
+                            Our models are continuously retrained with new market data, ensuring our valuations remain accurate as market conditions evolve. We incorporate feedback from actual transaction prices to improve our algorithms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Meet Our Team</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="team-card bg-white p-6 text-center rounded-xl shadow-md">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user-tie text-blue-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">*</h3>
+                    <p class="text-blue-600 font-medium mb-3">Founder & CEO</p>
+                    <p class="text-gray-600 text-sm">
+                        15+ years in real estate technology. Former Head of Product at PropTiger. Passionate about making real estate transparent.
+                    </p>
+                </div>
+                
+                <div class="team-card bg-white p-6 text-center rounded-xl shadow-md">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-brain text-green-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">*</h3>
+                    <p class="text-green-600 font-medium mb-3">Chief Data Scientist</p>
+                    <p class="text-gray-600 text-sm">
+                        PhD in Machine Learning from IIT. Specializes in predictive analytics and real estate valuation models.
+                    </p>
+                </div>
+                
+                <div class="team-card bg-white p-6 text-center rounded-xl shadow-md">
+                    <div class="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-map-marked-alt text-purple-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">*</h3>
+                    <p class="text-purple-600 font-medium mb-3">Head of Market Research</p>
+                    <p class="text-gray-600 text-sm">
+                        12 years in Pune real estate. Deep knowledge of local markets and emerging trends across Pune localities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="py-12 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to Get Accurate Property Valuations?</h2>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8">
+                Join thousands of Pune homeowners who trust PunePropAI for their property decisions
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="index.html" class="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg font-bold text-lg shadow-lg transition-colors inline-flex items-center gap-2">
+                    <i class="fas fa-home"></i> Get Your Home Value
+                </a>
+                <button class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg font-bold text-lg transition-colors inline-flex items-center gap-2">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="text-xl font-bold">PunePropAI</span>
+                    </div>
+                    <p class="text-gray-300 text-sm">
+                        AI-powered property valuation for Pune homeowners, buyers, and real estate professionals.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home Valuation</a></li>
+                        <li><a href="market-trends.html" class="hover:text-white transition-colors">Market Trends</a></li>
+                        <li><a href="area-insights.html" class="hover:text-white transition-colors">Area Insights</a></li>
+                        <li><a href="resources.html" class="hover:text-white transition-colors">Buyer Resources</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Contact Info</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> Pune, Maharashtra</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +91 98765 43210</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@punepropai.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">Newsletter</h3>
+                    <p class="text-gray-300 text-sm mb-3">Get latest Pune real estate insights</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 rounded-l text-gray-800 w-full">
+                        <button class="bg-blue-500 hover:bg-blue-600 px-4 rounded-r text-white">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2024 PunePropAI. All rights reserved. | Data sourced from proprietary AI models and market research</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

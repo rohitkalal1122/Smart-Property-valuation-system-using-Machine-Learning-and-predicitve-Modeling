@@ -1,0 +1,48 @@
+/* Hero background and overlay */
+.hero-bg {
+  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.hero-overlay {
+  background: rgba(37, 99, 235, 0.7);
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Glassmorphism card effect */
+.glass-card {
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+  backdrop-filter: blur(6px);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(37, 99, 235, 0.08);
+}
+
+/* Responsive padding for card */
+@media (max-width: 768px) {
+  .glass-card {
+    padding: 1.5rem !important;
+  }
+}
+
+/* Custom button hover effect */
+.btn-gradient {
+  background: linear-gradient(to right, #3b82f6, #1e40af);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px 0 rgba(59, 130, 246, 0.10);
+  transition: background 0.2s;
+}
+.btn-gradient:hover {
+  background: linear-gradient(to right, #2563eb, #1e3a8a);
+}
+
+/* For disabled tab button */
+.tab-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
