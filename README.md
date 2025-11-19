@@ -1,0 +1,2 @@
+# Smart-Property-valuation-system-using-Machine-Learning-and-predicitve-Modeling
+Smart Property Valuation System is a web platform that predicts property prices using machine learning and location data. It includes interactive map input, budget-based area suggestions, and built-in EMI, ROI, and affordability calculators to help users make transparent, data-driven real estate decisions and It provides accurate valuations
