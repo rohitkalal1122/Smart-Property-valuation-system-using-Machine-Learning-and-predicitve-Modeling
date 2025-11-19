@@ -56,7 +56,7 @@ Git / GitHub
 Follow these steps to run the project locally:
 
 1️⃣ Clone the Repository
-git clone https://github.com/your-username/your-repo-name.git
+git clone (https://github.com/rohitkalal1122/Smart-Property-valuation-system-using-Machine-Learning-and-predicitve-Modeling.git)
 
 2️⃣ Install Dependencies
 pip install -r requirements.txt
